@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Student Form</title>
+<!--    <link rel="stylesheet" th:href="@{/resources/css/style.css}">-->
+<link rel="stylesheet" th:href="@{/css/style.css}">
+</head>
+<body>
+<div class="container">
+    <h1 th:text="${student.id != 0} ? 'Edit Student' : 'Add Student'"></h1>
+    <form th:action="${student.id != 0} ? '/students/update' : '/students'" th:object="${student}" method="post" accept-charset="UTF-8">
+        <input type="hidden" th:field="*{id}"/>
+        <div class="form-group">
+            <label for="name">Name:</label>
+            <input type="text" id="name" th:field="*{name}" required/>
+        </div>
+        <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" th:field="*{email}" required/>
+        </div>
+        <div class="form-group">
+            <label>Course:</label>
+            <select id="courseId" name="courseId" accept-charset="UTF-8">
+                <option value="">-- Select Course --</option>
+                <option th:each="course : ${courses}"
+                        th:value="${course.id}"
+                        th:text="${course.name}"
+                        th:selected="${student.course != null and student.course.id == course.id}">
+                </option>
+            </select>
+        </div>
+        <button type="submit" class="btn btn-save">Save</button>
+        <a th:href="@{/students}" class="btn btn-cancel">Cancel</a>
+    </form>
+</div>
+</body>
+</html>
