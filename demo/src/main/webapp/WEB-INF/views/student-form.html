@@ -10,15 +10,16 @@
 <div class="container">
     <h1 th:text="${student.id != 0} ? 'Edit Student' : 'Add Student'"></h1>
     <form th:action="${student.id != 0} ? '/students/update' : '/students'" th:object="${student}" method="post" accept-charset="UTF-8">
-        <input type="hidden" th:field="*{id}"/>
+        <input type="hidden" id="id" name="id" th:field="*{id}"/>
         <div class="form-group">
             <label for="name">Name:</label>
-            <input type="text" id="name" th:field="*{name}" required/>
+            <input type="text" id="name" name="name" th:field="*{name}"/>
+            <span th:if="${#fields.hasErrors('name')}" th:errors="*{name}" style="color: red;"></span>
         </div>
         <div class="form-group">
             <label for="email">Email:</label>
-            <input type="email" id="email" th:field="*{email}" required/>
-        </div>
+            <input type="email" id="email" name="email" th:field="*{email}"/>
+            <span th:if="${#fields.hasErrors('email')}" th:errors="*{email}" style="color: red;"></span>        </div>
         <div class="form-group">
             <label>Course:</label>
             <select id="courseId" name="courseId" accept-charset="UTF-8">
@@ -26,7 +27,7 @@
                 <option th:each="course : ${courses}"
                         th:value="${course.id}"
                         th:text="${course.name}"
-                        th:selected="${student.course != null and student.course.id == course.id}">
+                        th:selected="${student.courseId != 0 and student.course.id == course.id}">
                 </option>
             </select>
         </div>

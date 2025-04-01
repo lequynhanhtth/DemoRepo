@@ -1,11 +1,12 @@
 package demo.service;
 
+import demo.entity.Course;
 import demo.entity.Student;
+import demo.repository.CourseRepository;
 import demo.repository.StudentRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import demo.request.StudentRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.List;
 
@@ -14,22 +15,26 @@ import java.util.List;
 public class StudentService {
 
     private final StudentRepository studentRepository;
-    private final CourseService courseService;
+    private final CourseRepository courseRepository;
 
-    public StudentService(StudentRepository studentRepository, CourseService courseService) {
+    public StudentService(StudentRepository studentRepository, CourseRepository courseRepository) {
         this.studentRepository = studentRepository;
-        this.courseService = courseService;
+        this.courseRepository = courseRepository;
     }
 
     public List<Student> getAllStudents() {
         return studentRepository.findAll();
     }
 
-    public void saveStudent(Student student, @RequestParam("courseId") int courseId) {
+    public void saveStudent(StudentRequest studentRequest) {
 
-        if (courseService.getCourseById(courseId) != null) {
-            student.setCourse(courseService.getCourseById(courseId));
+        Course course = null;
+        if (studentRequest.getCourseId() != null) {
+            course = courseRepository.findById(
+                    studentRequest.getCourseId()).orElseThrow(() -> new RuntimeException()
+            );
         }
+        Student student = new Student(studentRequest.getId(), studentRequest.getName(), studentRequest.getEmail(), course);
         studentRepository.save(student);
     }
 

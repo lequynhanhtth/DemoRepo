@@ -22,6 +22,19 @@
             <version>${spring.version}</version>
         </dependency>
 
+        <!-- Hibernate Validator (for JSR-303/Jakarta Bean Validation) -->
+        <dependency>
+            <groupId>org.hibernate.validator</groupId>
+            <artifactId>hibernate-validator</artifactId>
+            <version>8.0.1.Final</version> <!-- Use the latest version -->
+        </dependency>
+
+        <!-- Validation API -->
+        <dependency>
+            <groupId>jakarta.validation</groupId>
+            <artifactId>jakarta.validation-api</artifactId>
+            <version>3.0.2</version> <!-- Use the latest version -->
+        </dependency>
         <!-- Spring ORM (cho JPA/Hibernate) -->
         <dependency>
             <groupId>org.springframework</groupId>

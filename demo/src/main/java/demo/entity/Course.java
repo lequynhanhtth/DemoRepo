@@ -3,6 +3,7 @@ package demo.entity;
 import jakarta.persistence.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 @Entity
@@ -23,6 +24,7 @@ public class Course {
     }
 
     public Course(String name) {
+        Arrays.asList(new int[]{2,3,2});
         this.name = name;
     }
 

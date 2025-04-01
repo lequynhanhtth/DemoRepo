@@ -1,12 +1,17 @@
 package demo.controller;
 
 import demo.entity.Student;
+import demo.exception.SaveDuplicatException;
+import demo.request.StudentRequest;
 import demo.service.CourseService;
 import demo.service.StudentService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
 
 @Controller
 @RequestMapping("/students")
@@ -26,15 +31,22 @@ public class StudentController {
 
     @GetMapping("/new")
     public String showCreateForm(Model model) {
-        model.addAttribute("student", new Student());
+        model.addAttribute("student", new StudentRequest());
         model.addAttribute("courses", courseService.getAllCourses());
         return "student-form";
     }
 
     @PostMapping
-    public String createStudent(@ModelAttribute Student student, @RequestParam("courseId") int courseId) {
-        studentService.saveStudent(student, courseId);
-        return "redirect:/students";
+    public String createStudent(
+            @Valid @ModelAttribute("student") StudentRequest student,
+            BindingResult result
+    ) {
+        if (result.hasErrors()) {
+            return "student-form";
+        }
+        studentService.saveStudent(student);
+        throw new SaveDuplicatException("Duplicate");
+//        return "redirect:/students";
     }
 
     @GetMapping("/edit/{id}")
@@ -46,8 +58,8 @@ public class StudentController {
     }
 
     @PostMapping("/update")
-    public String updateStudent(@ModelAttribute Student student, @RequestParam("courseId") int courseId) {
-        studentService.saveStudent(student, courseId);
+    public String updateStudent(@ModelAttribute StudentRequest student) {
+        studentService.saveStudent(student);
         return "redirect:/students";
     }
 
@@ -55,5 +67,12 @@ public class StudentController {
     public String deleteStudent(@PathVariable("id") int id) {
         studentService.deleteStudent(id);
         return "redirect:/students";
+    }
+
+    // Xử lý ngoại lệ trong controller
+    @ExceptionHandler(Exception.class)
+    public String handleIllegalArgumentException(Exception ex, Model model) {
+        model.addAttribute("errorMessage", ex.getMessage());
+        return "error"; // Trả về trang lỗi
     }
 }

@@ -25,6 +25,13 @@ public class Student {
         this.email = email;
     }
 
+    public Student(int id, String name, String email, Course course) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.course = course;
+    }
+
     // Getters và Setters
     public int getId() { return id; }
     public void setId(int id) { this.id = id; }

@@ -71,4 +71,5 @@
 
     <!-- Bật JPA Repository -->
     <jpa:repositories base-package="demo.repository"/>
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean"/>
 </beans>

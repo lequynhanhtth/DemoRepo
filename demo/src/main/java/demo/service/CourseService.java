@@ -10,29 +10,17 @@ import java.util.List;
 
 @Service
 @Transactional
-public class CourseService {
-
-    @Autowired
-    private CourseRepository courseRepository;
+public interface CourseService {
 
     /**
      *  java doc
      * @return Courses of KR
      */
-    public List<Course> getAllCourses() {
-        // Return All cours from DB
-        return courseRepository.findAll();
-    }
+    public List<Course> getAllCourses();
 
-    public void saveCourse(Course course) {
-        courseRepository.save(course);
-    }
+    public void saveCourse(Course course);
 
-    public Course getCourseById(int id) {
-        return courseRepository.findById(id).orElse(null);
-    }
+    public Course getCourseById(int id) ;
 
-    public void deleteCourse(int id) {
-        courseRepository.deleteById(id);
-    }
+    public void deleteCourse(int id) ;
 }
